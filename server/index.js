@@ -10,6 +10,13 @@ import clientRoutes from "./routes/clients.js";
 import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
+
+// data imports
+import { dataProduct, dataProductStat, dataUser } from "./data/index.js";
+import Product from "./models/Product.js";
+import ProductStat from "./models/ProductStat.js";
+import User from "./models/User.js";
+
 // mongoDB pass - DXGaF5fpWxfTSSvq
 
 /* CONFIGURATION */
@@ -31,7 +38,15 @@ app.use("/sales", salesRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 8000;
-mongoose.connect(process.env.MONGO_URL).then(() => {
-  console.log("MongoDB connected");
-  app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
-});
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("MongoDB connected");
+    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+
+    // ONLY ADD DATA ONE TIME
+    // Product.insertMany(dataProduct);
+    // ProductStat.insertMany(dataProductStat);
+    // User.insertMany(dataUser);
+  })
+  .catch((error) => console.log(`${error} did not connect`));

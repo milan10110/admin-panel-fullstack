@@ -168,6 +168,12 @@ function Sidebar({
                           active === lcText
                             ? theme.palette.primary[600]
                             : theme.palette.secondary[100],
+                        "&:hover": {
+                          color: theme.palette.secondary[100],
+                        },
+                        "&:hover .MuiListItemIcon-root": {
+                          color: theme.palette.secondary[200],
+                        },
                       }}
                     >
                       <ListItemIcon
@@ -183,7 +189,11 @@ function Sidebar({
                       </ListItemIcon>
                       <ListItemText primary={text} />
                       {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        <ChevronRightOutlined
+                          sx={{
+                            ml: "auto",
+                          }}
+                        />
                       )}
                     </ListItemButton>
                   </ListItem>

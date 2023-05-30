@@ -10,10 +10,12 @@ import Daily from "scenes/daily";
 import Dashboard from "scenes/dashboard";
 import Geography from "scenes/geography";
 import Layout from "scenes/layout";
+import Login from "scenes/login";
 import Monthly from "scenes/monthly";
 import Overview from "scenes/overview";
 import Performance from "scenes/performance";
 import Products from "scenes/products";
+import SignUp from "scenes/signup";
 import Transactions from "scenes/transactions";
 import { themeSettings } from "theme";
 
@@ -27,6 +29,8 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route element={<Layout />}>
               <Route
                 path="/"

@@ -7,7 +7,6 @@ export const api = createApi({
   }),
   reducerPath: "adminApi",
   tagTypes: [
-    "Login",
     "User",
     "Products",
     "Customers",
@@ -19,13 +18,21 @@ export const api = createApi({
     "Dashboard",
   ],
   endpoints: (build) => ({
-    authenticateUser: build.query({
+    authenticateUser: build.mutation({
       query: (credentials) => ({
         url: "auth/login",
         method: "POST",
         body: credentials,
       }),
-      providesTags: ["Login"],
+      invalidatesTags: ["Login"],
+    }),
+    registerUser: build.mutation({
+      query: (credentials) => ({
+        url: "auth/register",
+        method: "POST",
+        body: credentials,
+      }),
+      invalidatesTags: ["Signup"],
     }),
     getUser: build.query({
       query: (id) => `general/user/${id}`,
@@ -65,14 +72,14 @@ export const api = createApi({
     }),
     getDashboard: build.query({
       query: () => "general/dashboard",
-      // credentials: "include",
       providesTags: ["Dashboard"],
     }),
   }),
 });
 
 export const {
-  useAuthenticateUserQuery,
+  useAuthenticateUserMutation,
+  useRegisterUserMutation,
   useGetUserQuery,
   useGetProductsQuery,
   useGetCustomersQuery,

@@ -57,6 +57,35 @@ const Dashboard = () => {
     },
   ];
 
+  // async function login() {
+  //   fetch("http://localhost:5001/auth/login", {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       email: "savantrada01@gmail.com",
+  //       password: "123456789@sS",
+  //     }),
+  //     credentials: "include",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("Success:", data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // }
+
+  // async function callLogin() {
+  //   await login();
+  // }
+
+  // useEffect(() => {
+  //   callLogin();
+  // }, []);
+
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>

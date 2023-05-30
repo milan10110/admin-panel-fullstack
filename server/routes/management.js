@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express from "express";
 import { getAdmins, getUserPerformance } from "../controllers/management.js";
 
 const router = express.Router();

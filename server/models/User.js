@@ -30,6 +30,9 @@ const UserSchema = new mongoose.Schema(
       enum: ["user", "admin", "superadmin"],
       default: "admin",
     },
+    token: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

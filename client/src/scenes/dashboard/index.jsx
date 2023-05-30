@@ -18,7 +18,7 @@ import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
 import OverviewChart from "components/OverviewChart";
 import StatBox from "components/StatBox";
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetDashboardQuery } from "state/api";
 
 const Dashboard = () => {

@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
@@ -6,6 +7,7 @@ import helmet from "helmet";
 import mongoose from "mongoose";
 import morgan from "morgan";
 
+import authRoutes from "./routes/auth.js";
 import clientRoutes from "./routes/clients.js";
 import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
@@ -20,6 +22,7 @@ import {
   dataTransaction,
   dataUser,
 } from "./data/index.js";
+import verifyToken from "./middleware/auth.js";
 import AffiliateStat from "./models/AffiliateStat.js";
 import OverallStat from "./models/OverallStat.js";
 import Product from "./models/Product.js";
@@ -33,18 +36,20 @@ import User from "./models/User.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: "false" }));
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 
 /* ROUTES */
-app.use("/client", clientRoutes);
-app.use("/general", generalRoutes);
-app.use("/management", managementRoutes);
-app.use("/sales", salesRoutes);
+app.use("/auth", authRoutes);
+app.use("/client", verifyToken, clientRoutes);
+app.use("/general", verifyToken, generalRoutes);
+app.use("/management", verifyToken, managementRoutes);
+app.use("/sales", verifyToken, salesRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 8000;

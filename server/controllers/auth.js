@@ -41,7 +41,13 @@ async function createUser(req, res) {
         secure: true, // Cookie sent over HTTPS only
         sameSite: "Strict", // Restrict cookie to same-site requests
       })
-      .json(user);
+      .json({
+        _id: user._id,
+        name: user.name,
+        role: user.role,
+        transactions: user.transactions,
+        email: user.email,
+      });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -73,7 +79,13 @@ async function logInUser(req, res) {
           sameSite: "Strict", // Restrict cookie to same-site requests
         })
         .status(200)
-        .json(user);
+        .json({
+          _id: user._id,
+          name: user.name,
+          role: user.role,
+          transactions: user.transactions,
+          email: user.email,
+        });
     }
     return res.status(400).send("Invalid Credentials");
   } catch (error) {

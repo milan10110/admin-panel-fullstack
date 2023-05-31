@@ -9,16 +9,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setUser } from "state";
 import { useAuthenticateUserMutation } from "state/api";
-// import { Link } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [authenticateUser, response] = useAuthenticateUserMutation();
-  console.log(response);
 
-  const handleSubmit = (event) => {
+  const userData = useSelector((state) => state.global.user);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
@@ -33,6 +38,19 @@ function Login() {
 
     authenticateUser(credentials);
   };
+
+  useEffect(() => {
+    if (response.data) {
+      const userData = response.data;
+      dispatch(setUser(userData));
+    }
+  }, [response.isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (userData) {
+      navigate("/dashboard");
+    }
+  }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

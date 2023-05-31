@@ -6,16 +6,22 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { setUser } from "state";
 import { useRegisterUserMutation } from "state/api";
 
 function SignUp() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const theme = useTheme();
 
   const [registerUser, response] = useRegisterUserMutation();
 
   console.log(response);
+
+  const userData = useSelector((state) => state.global.user);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,6 +41,19 @@ function SignUp() {
 
     registerUser(credentials);
   };
+
+  useEffect(() => {
+    if (response.data) {
+      const userData = response.data;
+      dispatch(setUser(userData));
+    }
+  }, [response.isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (userData) {
+      navigate("/dashboard");
+    }
+  }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container component="main" maxWidth="xs">

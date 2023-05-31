@@ -20,6 +20,6 @@ export const globalSlice = createSlice({
   },
 });
 
-export const { setMode } = globalSlice.actions;
+export const { setMode, setUser } = globalSlice.actions;
 
 export default globalSlice.reducer;

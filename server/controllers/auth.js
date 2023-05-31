@@ -33,7 +33,15 @@ async function createUser(req, res) {
 
     user.token = token;
 
-    res.status(201).set("x-access-token", token).json(user);
+    res
+      .status(201)
+      .cookie("accessToken", token, {
+        maxAge: 86400000, // Cookie expiration time (in milliseconds)
+        httpOnly: true, // Cookie accessible only by the server
+        secure: true, // Cookie sent over HTTPS only
+        sameSite: "Strict", // Restrict cookie to same-site requests
+      })
+      .json(user);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

@@ -19,14 +19,12 @@ import {
   useTheme,
 } from "@mui/material";
 import profileImage from "assets/profile.jpeg";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { setMode, setUser } from "state";
 import FlexBetween from "./FlexBetween";
 
 function Navbar({ isSidebarOpen, setIsSidebarOpen }) {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
   const user = useSelector((state) => state.global.user);

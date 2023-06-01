@@ -19,19 +19,19 @@ function SignUp() {
 
   const [registerUser, response] = useRegisterUserMutation();
 
-  console.log(response);
+  // console.log(response);
 
   const userData = useSelector((state) => state.global.user);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-      reEnteredPassword: data.get("reEnterPassword"),
-      fullName: data.get("fullName"),
-    });
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    //   reEnteredPassword: data.get("reEnterPassword"),
+    //   fullName: data.get("fullName"),
+    // });
 
     const credentials = {
       name: data.get("fullName"),

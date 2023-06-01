@@ -7,6 +7,7 @@ export const api = createApi({
   }),
   reducerPath: "adminApi",
   tagTypes: [
+    "UserData",
     "User",
     "Products",
     "Customers",
@@ -33,6 +34,10 @@ export const api = createApi({
         body: credentials,
       }),
       invalidatesTags: ["Signup"],
+    }),
+    reAuthenticateUser: build.query({
+      query: () => "auth/relogin",
+      providesTags: ["UserData"],
     }),
     getUser: build.query({
       query: (id) => `general/user/${id}`,
@@ -78,6 +83,7 @@ export const api = createApi({
 });
 
 export const {
+  useReAuthenticateUserQuery,
   useAuthenticateUserMutation,
   useRegisterUserMutation,
   useGetUserQuery,

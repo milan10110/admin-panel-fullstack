@@ -73,10 +73,10 @@ async function logInUser(req, res) {
       user.token = token;
       return res
         .cookie("accessToken", token, {
-          maxAge: 86400000, // Cookie expiration time (in milliseconds)
-          httpOnly: true, // Cookie accessible only by the server
-          secure: true, // Cookie sent over HTTPS only
-          sameSite: "Strict", // Restrict cookie to same-site requests
+          maxAge: 86400000,
+          httpOnly: true,
+          secure: true,
+          sameSite: "Strict",
         })
         .status(200)
         .json({
@@ -93,4 +93,37 @@ async function logInUser(req, res) {
   }
 }
 
-export { createUser, logInUser };
+async function reLogInUser(req, res) {
+  try {
+    const user = await User.findOne({ email: req.user.email });
+
+    //CREATING COOKIE
+    let token = "";
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      token = jwt.sign({ user_id: user._id, email }, process.env.TOKEN_KEY, {
+        expiresIn: "5h",
+      });
+    }
+
+    res
+      .cookie("accessToken", token, {
+        maxAge: 86400000,
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+      })
+      .status(200)
+      .json({
+        _id: user._id,
+        name: user.name,
+        role: user.role,
+        transactions: user.transactions,
+        email: user.email,
+      });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
+export { createUser, logInUser, reLogInUser };

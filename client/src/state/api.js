@@ -35,6 +35,13 @@ export const api = createApi({
       }),
       invalidatesTags: ["Signup"],
     }),
+    logOutUser: build.mutation({
+      query: () => ({
+        url: "auth/logout",
+        method: "POST",
+        body: {},
+      }),
+    }),
     reAuthenticateUser: build.query({
       query: () => "auth/relogin",
       providesTags: ["UserData"],
@@ -83,9 +90,10 @@ export const api = createApi({
 });
 
 export const {
-  useReAuthenticateUserQuery,
   useAuthenticateUserMutation,
   useRegisterUserMutation,
+  useLogOutUserMutation,
+  useReAuthenticateUserQuery,
   useGetUserQuery,
   useGetProductsQuery,
   useGetCustomersQuery,

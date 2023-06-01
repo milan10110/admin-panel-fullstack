@@ -21,19 +21,29 @@ import {
 import profileImage from "assets/profile.jpeg";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setMode, setUser } from "state";
+import { useLogOutUserMutation } from "state/api";
 import FlexBetween from "./FlexBetween";
 
 function Navbar({ isSidebarOpen, setIsSidebarOpen }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [logOutUser, response] = useLogOutUserMutation();
   const theme = useTheme();
   const user = useSelector((state) => state.global.user);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
+
   const handleLogout = () => {
     dispatch(setUser(null));
+    navigate("/login");
+    logOutUser();
+  };
+
+  const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
@@ -124,10 +134,17 @@ function Navbar({ isSidebarOpen, setIsSidebarOpen }) {
                 <Menu
                   anchorEl={anchorEl}
                   open={isOpen}
-                  onClose={handleLogout}
+                  onClose={handleCloseMenu}
                   anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                 >
-                  <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleCloseMenu();
+                      handleLogout();
+                    }}
+                  >
+                    Log Out
+                  </MenuItem>
                 </Menu>
               </FlexBetween>
             </FlexBetween>

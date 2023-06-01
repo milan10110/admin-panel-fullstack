@@ -100,10 +100,14 @@ async function reLogInUser(req, res) {
     //CREATING COOKIE
     let token = "";
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      token = jwt.sign({ user_id: user._id, email }, process.env.TOKEN_KEY, {
-        expiresIn: "5h",
-      });
+    if (user) {
+      token = jwt.sign(
+        { user_id: user._id, email: user.email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "5h",
+        }
+      );
     }
 
     res
@@ -126,4 +130,20 @@ async function reLogInUser(req, res) {
   }
 }
 
-export { createUser, logInUser, reLogInUser };
+async function logOutUser(req, res) {
+  try {
+    res
+      .status(200)
+      .cookie("accessToken", "", {
+        maxAge: 0,
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+      })
+      .json({ status: "successful" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
+export { createUser, logInUser, reLogInUser, logOutUser };

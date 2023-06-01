@@ -15,9 +15,13 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     // console.log("data", data);
-    if (data) {
-      dispatch(setUser(data));
+
+    async function fetchData() {
+      if (data) {
+        await dispatch(setUser(data));
+      }
     }
+    fetchData();
   }, [isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
   if (!isLoading && !user) {

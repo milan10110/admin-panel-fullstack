@@ -63,7 +63,20 @@ async function logInUser(req, res) {
 
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (
+      user &&
+      ((await bcrypt.compare(password, user.password)) ||
+        password === user.password)
+    ) {
+      if (password === user.password) {
+        //Update the data
+        const encryptedUserPassword = await bcrypt.hash(password, 10);
+        await User.updateOne(
+          { email: email },
+          { password: encryptedUserPassword }
+        );
+      }
+
       const token = jwt.sign(
         { user_id: user._id, email },
         process.env.TOKEN_KEY,

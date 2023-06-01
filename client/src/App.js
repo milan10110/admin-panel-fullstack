@@ -13,6 +13,7 @@ import Geography from "scenes/geography";
 import Layout from "scenes/layout";
 import Login from "scenes/login";
 import Monthly from "scenes/monthly";
+import NotAllowed from "scenes/notallowed";
 import Overview from "scenes/overview";
 import Performance from "scenes/performance";
 import Products from "scenes/products";
@@ -32,6 +33,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/notallowed" element={<NotAllowed />} />
             <Route
               element={
                 <ProtectedRoute>

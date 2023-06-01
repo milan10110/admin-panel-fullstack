@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import Header from "components/Header";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useGetProductsQuery } from "state/api";
 
 const Product = ({

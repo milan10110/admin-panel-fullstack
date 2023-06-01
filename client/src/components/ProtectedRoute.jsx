@@ -10,12 +10,8 @@ const ProtectedRoute = ({ children }) => {
   const { data, isLoading } = useReAuthenticateUserQuery(1, { skip: skip });
   let location = useLocation();
   const dispatch = useDispatch();
-  // console.log(data);
-  console.log("Incoming");
 
   useEffect(() => {
-    // console.log("data", data);
-
     async function fetchData() {
       if (data) {
         await dispatch(setUser(data));
@@ -25,6 +21,10 @@ const ProtectedRoute = ({ children }) => {
   }, [isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
   if (!isLoading && !user) {
+    if (user.role === "user") {
+      return <Navigate to="/notallowed" state={{ from: location }} replace />;
+    }
+
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

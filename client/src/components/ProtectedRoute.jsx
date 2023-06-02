@@ -20,14 +20,15 @@ const ProtectedRoute = ({ children }) => {
     fetchData();
   }, [isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  if (!isLoading && !user) {
-    if (user.role === "user") {
-      return <Navigate to="/notallowed" state={{ from: location }} replace />;
-    }
-
+  if (isLoading) {
+    return <></>;
+  }
+  if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-
+  if (user.role === "user") {
+    return <Navigate to="/notallowed" state={{ from: location }} replace />;
+  }
   return children;
 };
 

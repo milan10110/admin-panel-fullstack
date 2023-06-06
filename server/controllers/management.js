@@ -70,4 +70,23 @@ async function getRolePermissions(req, res) {
   }
 }
 
-export { getAdmins, getUserPerformance, getRoleList, getRolePermissions };
+async function updateRolePermissions(req, res) {
+  try {
+    const { name } = req.params;
+    const permissions = req.body;
+
+    await Role.updateOne({ name: name }, { permissions: permissions });
+
+    res.status(200).json({ message: "updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export {
+  getAdmins,
+  getUserPerformance,
+  getRoleList,
+  getRolePermissions,
+  updateRolePermissions,
+};

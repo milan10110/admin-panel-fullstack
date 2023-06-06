@@ -1,5 +1,7 @@
+import { useTheme } from "@emotion/react";
 import {
   Box,
+  Button,
   Checkbox,
   FormControl,
   Grid,
@@ -9,7 +11,11 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGetRoleListQuery, useGetRolePermissionsQuery } from "state/api";
+import {
+  useGetRoleListQuery,
+  useGetRolePermissionsQuery,
+  useUpdateRolePermissionsMutation,
+} from "state/api";
 
 // const rows = [
 //   {
@@ -23,26 +29,23 @@ import { useGetRoleListQuery, useGetRolePermissionsQuery } from "state/api";
 // ];
 
 function ManageRoles() {
+  const theme = useTheme();
   const [data, setData] = useState(null);
   const [role, setRole] = useState("");
   const [roleList, setRoleList] = useState(null);
   const [skip, setSkip] = useState(true);
+  const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const navigate = useNavigate();
 
   const { data: roleListRes, isLoading, error } = useGetRoleListQuery();
   const { data: rolePermissions } = useGetRolePermissionsQuery(role, {
     skip: skip,
   });
-
-  
-  useEffect(() => {
-    if (!isLoading && error?.status === 403) {
-      navigate("/notallowed");
-    }
-  }, [isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
+  const [updatePermissions, response] = useUpdateRolePermissionsMutation();
 
   const handleSelectChange = (event) => {
     setRole(event.target.value);
+    setIsSaveDisabled(true);
   };
 
   const handleChange = (event) => {
@@ -50,12 +53,29 @@ function ManageRoles() {
 
     const index = data.findIndex((row) => row.id === Number(id));
 
-    const newData = [...data];
+    // const newData = [...data];
+    const newData = JSON.parse(JSON.stringify(data));
 
     newData[index][name] = !newData[index][name];
 
     setData(newData);
+    setIsSaveDisabled(false);
   };
+
+  const handleSaveData = () => {
+    const payload = {
+      role,
+      permissions: data,
+    };
+
+    updatePermissions(payload);
+  };
+
+  useEffect(() => {
+    if (!isLoading && error?.status === 403) {
+      navigate("/notallowed");
+    }
+  }, [isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (roleListRes) {
@@ -81,9 +101,19 @@ function ManageRoles() {
     }
   }, [rolePermissions]);
 
+  useEffect(() => {
+    if (JSON.stringify(rolePermissions) === JSON.stringify(data)) {
+      setIsSaveDisabled(true);
+    } else {
+      if (isSaveDisabled) {
+        setIsSaveDisabled(false);
+      }
+    }
+  }, [data]); //eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Box>
-      <FormControl sx={{ m: 1 }}>
+      <FormControl sx={{ m: "2rem" }}>
         <Select
           value={role}
           onChange={handleSelectChange}
@@ -205,6 +235,21 @@ function ManageRoles() {
           </Grid>
         ))}
       </Grid>
+      <Box sx={{ p: "2rem 3rem", display: "flex", justifyContent: "end" }}>
+        <Button
+          variant="outlined"
+          sx={{
+            color: theme.palette.secondary.light,
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "10px 20px",
+          }}
+          disabled={isSaveDisabled}
+          onClick={handleSaveData}
+        >
+          Save Changes
+        </Button>
+      </Box>
     </Box>
   );
 }

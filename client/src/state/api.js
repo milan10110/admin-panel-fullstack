@@ -27,7 +27,7 @@ export const api = createApi({
         method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ["Login"],
+      invalidatesTags: ["User"],
     }),
     registerUser: build.mutation({
       query: (credentials) => ({
@@ -35,7 +35,7 @@ export const api = createApi({
         method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ["Signup"],
+      invalidatesTags: ["User"],
     }),
     logOutUser: build.mutation({
       query: () => ({
@@ -43,6 +43,7 @@ export const api = createApi({
         method: "POST",
         body: {},
       }),
+      invalidatesTags: ["User"],
     }),
     reAuthenticateUser: build.query({
       query: () => "auth/relogin",
@@ -92,6 +93,14 @@ export const api = createApi({
       query: (name) => `management/roles/${name}`,
       providesTags: ["RolePermissions"],
     }),
+    updateRolePermissions: build.mutation({
+      query: (payload) => ({
+        url: `management/roles/${payload.role}`,
+        method: "POST",
+        body: payload.permissions,
+      }),
+      invalidatesTags: ["RolePermissions"],
+    }),
     getDashboard: build.query({
       query: () => "general/dashboard",
       providesTags: ["Dashboard"],
@@ -114,5 +123,6 @@ export const {
   useGetUserPerformanceQuery,
   useGetRoleListQuery,
   useGetRolePermissionsQuery,
+  useUpdateRolePermissionsMutation,
   useGetDashboardQuery,
 } = api;

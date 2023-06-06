@@ -18,6 +18,7 @@ export const api = createApi({
     "Performance",
     "RoleList",
     "RolePermissions",
+    "AvailablePermissions",
     "Dashboard",
   ],
   endpoints: (build) => ({
@@ -101,6 +102,18 @@ export const api = createApi({
       }),
       invalidatesTags: ["RolePermissions"],
     }),
+    createNewRole: build.mutation({
+      query: (payload) => ({
+        url: "management/roles",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["RoleList", "RolePermissions"],
+    }),
+    getAvailablePermisssions: build.query({
+      query: () => "management/availablepermissions",
+      providesTags: ["AvailablePermissions"],
+    }),
     getDashboard: build.query({
       query: () => "general/dashboard",
       providesTags: ["Dashboard"],
@@ -124,5 +137,7 @@ export const {
   useGetRoleListQuery,
   useGetRolePermissionsQuery,
   useUpdateRolePermissionsMutation,
+  useCreateNewRoleMutation,
+  useGetAvailablePermisssionsQuery,
   useGetDashboardQuery,
 } = api;

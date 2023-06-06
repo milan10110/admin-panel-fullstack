@@ -9,6 +9,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
+import CreateNewRoleModal from "components/CreateNewRoleModal";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -37,11 +38,17 @@ function ManageRoles() {
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const navigate = useNavigate();
 
+  //Modal state
+  const [open, setOpen] = useState(false);
+
   const { data: roleListRes, isLoading, error } = useGetRoleListQuery();
   const { data: rolePermissions } = useGetRolePermissionsQuery(role, {
     skip: skip,
   });
   const [updatePermissions, response] = useUpdateRolePermissionsMutation();
+
+  // event handler for opening the modal
+  const handleOpen = () => setOpen(true);
 
   const handleSelectChange = (event) => {
     setRole(event.target.value);
@@ -113,7 +120,16 @@ function ManageRoles() {
 
   return (
     <Box>
-      <FormControl sx={{ m: "2rem" }}>
+      <CreateNewRoleModal open={open} setOpen={setOpen} />
+      <FormControl
+        sx={{
+          m: "2rem",
+          p: "1rem",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
         <Select
           value={role}
           onChange={handleSelectChange}
@@ -125,6 +141,18 @@ function ManageRoles() {
             </MenuItem>
           ))}
         </Select>
+        <Button
+          variant="outlined"
+          sx={{
+            color: theme.palette.secondary.light,
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "10px 20px",
+          }}
+          onClick={handleOpen}
+        >
+          Create New Role
+        </Button>
       </FormControl>
       <Grid container spacing={2}>
         {/* Header */}

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { availablePermissions } from "../data/availablePermissions.js";
 import Role from "../models/Role.js";
 import Transaction from "../models/Transaction.js";
 import User from "../models/User.js";
@@ -83,10 +84,38 @@ async function updateRolePermissions(req, res) {
   }
 }
 
+async function createNewRole(req, res) {
+  try {
+    const role = req.body;
+
+    await Role.updateOne(
+      { name: role.name },
+      { name: role.name, permissions: role.permissions },
+      { upsert: true }
+    );
+
+    res.status(200).json({ message: "Created successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function getAvailablePermissions(req, res) {
+  try {
+    const permissions = availablePermissions;
+    res.status(200).json(permissions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export {
   getAdmins,
   getUserPerformance,
   getRoleList,
   getRolePermissions,
   updateRolePermissions,
+  createNewRole,
+  getAvailablePermissions,
 };

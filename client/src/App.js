@@ -12,6 +12,7 @@ import Dashboard from "scenes/dashboard";
 import Geography from "scenes/geography";
 import Layout from "scenes/layout";
 import Login from "scenes/login";
+import ManageRoles from "scenes/manageroles";
 import Monthly from "scenes/monthly";
 import NotAllowed from "scenes/notallowed";
 import Overview from "scenes/overview";
@@ -56,6 +57,7 @@ function App() {
               <Route path="/breakdown" element={<Breakdown />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/performance" element={<Performance />} />
+              <Route path="/manageroles" element={<ManageRoles />} />
             </Route>
           </Routes>
         </ThemeProvider>

@@ -3,12 +3,20 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
 import Header from "components/Header";
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useGetAdminsQuery } from "state/api";
 
 function Admin() {
-  const { data, isLoading } = useGetAdminsQuery();
+  const navigate = useNavigate();
+  const { data, isLoading, error } = useGetAdminsQuery();
   const theme = useTheme();
+
+  useEffect(() => {
+    if (!isLoading && error?.status === 403) {
+      navigate("/notallowed");
+    }
+  }, [isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const columns = [
     {

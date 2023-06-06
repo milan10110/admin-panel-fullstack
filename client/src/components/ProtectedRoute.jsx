@@ -23,11 +23,8 @@ const ProtectedRoute = ({ children }) => {
   if (isLoading) {
     return <></>;
   }
-  if (!user) {
+  if (!data && !user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-  if (user.role === "user") {
-    return <Navigate to="/notallowed" state={{ from: location }} replace />;
   }
   return children;
 };

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Role from "../models/Role.js";
 import Transaction from "../models/Transaction.js";
 import User from "../models/User.js";
 
@@ -46,4 +47,27 @@ async function getUserPerformance(req, res) {
   }
 }
 
-export { getAdmins, getUserPerformance };
+async function getRoleList(req, res) {
+  try {
+    const roles = await Role.find();
+
+    const roleList = roles.map((role) => role.name);
+
+    res.status(200).json(roleList);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function getRolePermissions(req, res) {
+  try {
+    const { name } = req.params;
+    const role = await Role.findOne({ name: name });
+
+    res.status(200).json(role.permissions);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export { getAdmins, getUserPerformance, getRoleList, getRolePermissions };

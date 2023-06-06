@@ -1,5 +1,6 @@
 import {
   AdminPanelSettingsOutlined,
+  AssignmentIndOutlined,
   CalendarMonthOutlined,
   ChevronLeft,
   ChevronRightOutlined,
@@ -90,6 +91,10 @@ const navItems = [
     text: "Performance",
     icon: <TrendingUpOutlined />,
   },
+  {
+    text: "Manage Roles",
+    icon: <AssignmentIndOutlined />,
+  },
 ];
 
 function Sidebar({
@@ -158,7 +163,7 @@ function Sidebar({
                         </Typography>
                       );
                     }
-                    const lcText = text.toLowerCase();
+                    const lcText = text.toLowerCase().split(" ").join("");
 
                     return (
                       <ListItem key={text} disablePadding>

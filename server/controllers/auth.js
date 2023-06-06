@@ -26,7 +26,7 @@ async function createUser(req, res) {
     });
 
     const token = jwt.sign(
-      { user_id: user._id, email },
+      { user_id: user._id, email, role: user.role },
       process.env.TOKEN_KEY,
       { expiresIn: "5h" }
     );
@@ -77,8 +77,15 @@ async function logInUser(req, res) {
         );
       }
 
+      if (typeof user.role === "string") {
+        console.log("changing Role");
+        const newRole = [];
+        newRole.push(user.role);
+        await User.updateOne({ email: email }, { role: newRole });
+      }
+
       const token = jwt.sign(
-        { user_id: user._id, email },
+        { user_id: user._id, email, role: user.role },
         process.env.TOKEN_KEY,
         { expiresIn: "5h" }
       );
@@ -115,7 +122,7 @@ async function reLogInUser(req, res) {
 
     if (user) {
       token = jwt.sign(
-        { user_id: user._id, email: user.email },
+        { user_id: user._id, email: user.email, role: user.role },
         process.env.TOKEN_KEY,
         {
           expiresIn: "5h",

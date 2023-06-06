@@ -29,6 +29,7 @@ import Product from "./models/Product.js";
 import ProductStat from "./models/ProductStat.js";
 import Transaction from "./models/Transaction.js";
 import User from "./models/User.js";
+import seedRoles from "./utils/seedRoles.js";
 
 // mongoDB pass - DXGaF5fpWxfTSSvq
 
@@ -55,7 +56,7 @@ app.use("/sales", verifyToken, salesRoutes);
 const PORT = process.env.PORT || 8000;
 mongoose
   .connect(process.env.MONGO_URL)
-  .then(() => {
+  .then(async () => {
     console.log("MongoDB connected");
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
 
@@ -66,5 +67,6 @@ mongoose
     // ProductStat.insertMany(dataProductStat);
     // User.insertMany(dataUser);
     // Transaction.insertMany(dataTransaction);
+    // seedRoles();
   })
   .catch((error) => console.log(`${error} did not connect`));

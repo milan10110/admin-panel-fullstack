@@ -7,6 +7,7 @@ import {
   getRolePermissions,
   getUserPerformance,
   updateRolePermissions,
+  updateUserRole,
 } from "../controllers/management.js";
 import authorizeRole from "../middleware/authorizeRole.js";
 
@@ -23,5 +24,6 @@ router.get(
   authorizeRole(["admin"]),
   getAvailablePermissions
 );
+router.post("/users/:email", authorizeRole(["admin"]), updateUserRole);
 
 export default router;

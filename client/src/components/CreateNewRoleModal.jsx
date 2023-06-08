@@ -48,7 +48,8 @@ function CreateNewRoleModal({ open, setOpen }) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "80%",
+    width: "70%",
+    borderRadius: "15px",
     bgcolor:
       theme.palette.mode === "dark"
         ? theme.palette.background.alt

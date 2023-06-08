@@ -110,6 +110,19 @@ async function getAvailablePermissions(req, res) {
   }
 }
 
+async function updateUserRole(req, res) {
+  try {
+    const { email } = req.params;
+    const updatedRoles = req.body;
+
+    const user = await User.updateOne({ email: email }, { role: updatedRoles });
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export {
   getAdmins,
   getUserPerformance,
@@ -118,4 +131,5 @@ export {
   updateRolePermissions,
   createNewRole,
   getAvailablePermissions,
+  updateUserRole,
 };

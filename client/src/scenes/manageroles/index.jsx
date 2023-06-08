@@ -10,6 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 import CreateNewRoleModal from "components/CreateNewRoleModal";
+import Header from "components/Header";
+import ManageUserRoles from "components/ManageUserRoles";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -45,7 +47,7 @@ function ManageRoles() {
   const { data: rolePermissions } = useGetRolePermissionsQuery(role, {
     skip: skip,
   });
-  const [updatePermissions, response] = useUpdateRolePermissionsMutation();
+  const [updatePermissions] = useUpdateRolePermissionsMutation();
 
   // event handler for opening the modal
   const handleOpen = () => setOpen(true);
@@ -120,164 +122,170 @@ function ManageRoles() {
 
   return (
     <Box>
-      <CreateNewRoleModal open={open} setOpen={setOpen} />
-      <FormControl
-        sx={{
-          m: "2rem",
-          p: "1rem",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <Select
-          value={role}
-          onChange={handleSelectChange}
-          inputProps={{ "aria-label": "Without label" }}
-        >
-          {roleList?.map((role) => (
-            <MenuItem value={role} key={role}>
-              {role}
-            </MenuItem>
-          ))}
-        </Select>
-        <Button
-          variant="outlined"
+      <Box>
+        <Box sx={{ p: "0 2rem" }}>
+          <Header title="Edit Role" subtitle="" />
+        </Box>
+        <CreateNewRoleModal open={open} setOpen={setOpen} />
+        <FormControl
           sx={{
-            color: theme.palette.secondary.light,
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "10px 20px",
+            m: "0rem 2rem 2rem 2rem",
+            p: "1rem",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
-          onClick={handleOpen}
         >
-          Create New Role
-        </Button>
-      </FormControl>
-      <Grid container spacing={2}>
-        {/* Header */}
-        <Grid item xs={12}>
-          <Grid container>
-            <Grid item xs={3}>
-              <Typography variant="h6" align="center">
-                Name
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="h6" align="center">
-                Read
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="h6" align="center">
-                Write
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="h6" align="center">
-                Create
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="h6" align="center">
-                Delete
-              </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-
-        {/* Rows */}
-        {data?.map((row, id) => (
-          <Grid key={row.id} item xs={12}>
-            <Grid container alignItems="center">
+          <Select
+            value={role}
+            onChange={handleSelectChange}
+            inputProps={{ "aria-label": "Without label" }}
+          >
+            {roleList?.map((role) => (
+              <MenuItem value={role} key={role}>
+                {role}
+              </MenuItem>
+            ))}
+          </Select>
+          <Button
+            variant="outlined"
+            sx={{
+              color: theme.palette.secondary.light,
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            onClick={handleOpen}
+          >
+            Create New Role
+          </Button>
+        </FormControl>
+        <Grid container spacing={2}>
+          {/* Header */}
+          <Grid item xs={12}>
+            <Grid container>
               <Grid item xs={3}>
-                <Typography variant="body1" align="center">
-                  {row.name}
+                <Typography variant="h6" align="center">
+                  Name
                 </Typography>
               </Grid>
               <Grid item xs={2}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Checkbox
-                    id={row.id.toString()}
-                    name="read"
-                    checked={row.read}
-                    onChange={handleChange}
-                  />
-                </Box>
+                <Typography variant="h6" align="center">
+                  Read
+                </Typography>
               </Grid>
               <Grid item xs={2}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Checkbox
-                    id={row.id.toString()}
-                    name="write"
-                    checked={row.write}
-                    onChange={handleChange}
-                  />
-                </Box>
+                <Typography variant="h6" align="center">
+                  Write
+                </Typography>
               </Grid>
               <Grid item xs={2}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Checkbox
-                    id={row.id.toString()}
-                    name="create"
-                    checked={row.create}
-                    onChange={handleChange}
-                  />
-                </Box>
+                <Typography variant="h6" align="center">
+                  Create
+                </Typography>
               </Grid>
               <Grid item xs={2}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Checkbox
-                    id={row.id.toString()}
-                    name="delete"
-                    checked={row.delete}
-                    onChange={handleChange}
-                  />
-                </Box>
+                <Typography variant="h6" align="center">
+                  Delete
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
-        ))}
-      </Grid>
-      <Box sx={{ p: "2rem 3rem", display: "flex", justifyContent: "end" }}>
-        <Button
-          variant="outlined"
-          sx={{
-            color: theme.palette.secondary.light,
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "10px 20px",
-          }}
-          disabled={isSaveDisabled}
-          onClick={handleSaveData}
-        >
-          Save Changes
-        </Button>
+
+          {/* Rows */}
+          {data?.map((row, id) => (
+            <Grid key={row.id} item xs={12}>
+              <Grid container alignItems="center">
+                <Grid item xs={3}>
+                  <Typography variant="body1" align="center">
+                    {row.name}
+                  </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Checkbox
+                      id={row.id.toString()}
+                      name="read"
+                      checked={row.read}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Checkbox
+                      id={row.id.toString()}
+                      name="write"
+                      checked={row.write}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Checkbox
+                      id={row.id.toString()}
+                      name="create"
+                      checked={row.create}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Checkbox
+                      id={row.id.toString()}
+                      name="delete"
+                      checked={row.delete}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          ))}
+        </Grid>
+        <Box sx={{ p: "2rem 3rem", display: "flex", justifyContent: "end" }}>
+          <Button
+            variant="outlined"
+            sx={{
+              color: theme.palette.secondary.light,
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            disabled={isSaveDisabled}
+            onClick={handleSaveData}
+          >
+            Save Changes
+          </Button>
+        </Box>
       </Box>
+      <ManageUserRoles roleList={roleList} />
     </Box>
   );
 }

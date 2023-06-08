@@ -114,6 +114,14 @@ export const api = createApi({
       query: () => "management/availablepermissions",
       providesTags: ["AvailablePermissions"],
     }),
+    updateUserRole: build.mutation({
+      query: (payload) => ({
+        url: `management/users/${payload.email}`,
+        method: "POST",
+        body: payload.roleList,
+      }),
+      invalidatesTags: ["User"],
+    }),
     getDashboard: build.query({
       query: () => "general/dashboard",
       providesTags: ["Dashboard"],
@@ -139,5 +147,6 @@ export const {
   useUpdateRolePermissionsMutation,
   useCreateNewRoleMutation,
   useGetAvailablePermisssionsQuery,
+  useUpdateUserRoleMutation,
   useGetDashboardQuery,
 } = api;
